@@ -23,10 +23,12 @@ function Workspace() {
       />
 
       {/* Workspace Content */}
-      <div className="p-3 pr-5 mt-3">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          <ChatView />
-          <div className="col-span-2">
+      <div className="p-3">
+        <div className="flex gap-2">
+          <div className="max-w-[300px] flex-shrink-0">
+            <ChatView />
+          </div>
+          <div className="flex-1 min-w-0">
             <CodeView />
           </div>
         </div>

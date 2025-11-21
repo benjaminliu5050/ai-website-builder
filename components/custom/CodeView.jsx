@@ -31,6 +31,8 @@ function CodeView() {
   const [loading, setLoading] = React.useState(false);
   const isInitialLoad = useRef(true);
   const previousMessagesLength = useRef(0);
+  const [sandpackKey, setSandpackKey] = React.useState(0);
+  const [previewRefreshKey, setPreviewRefreshKey] = React.useState(0);
 
   React.useEffect(() => {
     // Only trigger AI code generation if:
@@ -67,18 +69,22 @@ function CodeView() {
     setFiles(mergedFiles);
     previousMessagesLength.current = result?.messages?.length || 0;
     isInitialLoad.current = false;
+    // Reset preview refresh key when loading new workspace
+    setPreviewRefreshKey(0);
+    setSandpackKey(0);
     setLoading(false);
   };
 
 
   const GenerateAiCode = async () => {
     setLoading(true);
+    // Capture current tab state to check later
+    const currentTab = activeTab;
     const PROMPT = JSON.stringify(messages) + " " + Prompt.CODE_GEN_PROMPT;
     try {
       const result = await axios.post("/api/gen-ai-code", {
         prompt: PROMPT,
       });
-      console.log(result.data);
       const aiResp = result.data;
 
       const mergedFiles = { ...Lookup.DEFAULT_FILE, ...aiResp.files };
@@ -88,20 +94,32 @@ function CodeView() {
         files: aiResp?.files,
       });
 
+      // Force Sandpack to remount with new files
+      setSandpackKey((prev) => prev + 1);
+      // Also refresh preview key so preview updates when switched to
+      setPreviewRefreshKey((prev) => prev + 1);
+
+      // If currently on "code" tab, automatically switch to "preview" to show the generated result
+      if (currentTab === "code") {
+        setActiveTab("preview");
+        // Force preview refresh when switching to preview tab
+        setPreviewRefreshKey((prev) => prev + 1);
+      }
+
     } catch (error) {
       console.error("Error in GenerateAiCode:", error);
       toast.error("Failed to generate AI code. Please try again later.");
     } finally {
-      setActiveTab("code");
       setLoading(false);
     }
   };
 
   return (
-    <div className="relative">
+    <div className="relative flex flex-col h-full">
       <div className="bg-[#181818] w-full p-2 border border-neutral-800">
         <div className="flex items-center flex-wrap shrink-0 bg-black p-1 w-[160px] gap-2 justify-center rounded-full">
-          <h2
+          <button
+            type="button"
             className={`text-sm font-medium transition-all duration-200 cursor-pointer px-3 py-1 rounded-full ${
               activeTab === "code"
                 ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
@@ -110,20 +128,26 @@ function CodeView() {
             onClick={() => setActiveTab("code")}
           >
             Code
-          </h2>
-          <h2
+          </button>
+          <button
+            type="button"
             className={`text-sm font-medium transition-all duration-200 cursor-pointer px-3 py-1 rounded-full ${
               activeTab === "preview"
                 ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
                 : "text-gray-300 hover:text-blue-400 hover:bg-blue-500/10"
             }`}
-            onClick={() => setActiveTab("preview")}
+            onClick={() => {
+              setActiveTab("preview");
+              // Force preview refresh when switching to preview tab
+              setPreviewRefreshKey((prev) => prev + 1);
+            }}
           >
             Preview
-          </h2>
+          </button>
         </div>
       </div>
       <SandpackProvider
+        key={sandpackKey}
         files={files}
         template="react"
         theme="dark"
@@ -142,7 +166,7 @@ function CodeView() {
             </>
           ) : (
             <>
-              <SandPackPreviewClient />
+              <SandPackPreviewClient key={`preview-${sandpackKey}-${activeTab}-${previewRefreshKey.current}`} />
             </>
           )}
         </SandpackLayout>

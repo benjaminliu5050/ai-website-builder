@@ -199,15 +199,11 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
       <DialogContent className="sm:max-w-md bg-black border border-gray-800 p-0 overflow-hidden">
         <div className="relative bg-black">
           <DialogHeader className="relative z-10 p-6 pb-4 border-b border-gray-800">
-            <DialogTitle className="text-center">
-              <h2 className="font-bold text-2xl text-white">
-                Welcome to DIFINES Prompt
-              </h2>
+            <DialogTitle className="text-center font-bold text-2xl text-white">
+              Welcome to DIFINES Prompt
             </DialogTitle>
-            <DialogDescription>
-              <p className="mt-2 text-center text-gray-400 text-sm">
-                Create amazing apps with AI assistance
-              </p>
+            <DialogDescription className="mt-2 text-center text-gray-400 text-sm">
+              Create amazing apps with AI assistance
             </DialogDescription>
           </DialogHeader>
 
@@ -215,6 +211,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
             {/* Tab Selection */}
             <div className="flex gap-3 mb-6">
               <button
+                type="button"
                 onClick={() => setTab("google")}
                 className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all duration-200 ${
                   tab === "google"
@@ -228,6 +225,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
                 </div>
               </button>
               <button
+                type="button"
                 onClick={() => setTab("username")}
                 className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all duration-200 ${
                   tab === "username"
@@ -317,6 +315,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
                 {/* Sign Up / Log In Toggle */}
                 <div className="flex gap-3 mb-4">
                   <button
+                    type="button"
                     onClick={() => {
                       setIsSignUp(true);
                       setError("");
@@ -330,6 +329,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
                     Sign Up
                   </button>
                   <button
+                    type="button"
                     onClick={() => {
                       setIsSignUp(false);
                       setError("");

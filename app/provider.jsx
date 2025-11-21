@@ -35,7 +35,6 @@ const Provider = ({ children }) => {
       });
       setUserDetail(result);
       setIsLoadingUser(false);
-      console.log(result);
     }
   };
 

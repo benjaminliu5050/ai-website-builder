@@ -15,7 +15,6 @@ export const UserDetailProvider = ({ children }) => {
       if (savedUser) {
         try {
           const parsedUser = JSON.parse(savedUser);
-          console.log("Loaded user from localStorage:", parsedUser);
           setUserDetail(parsedUser);
         } catch (error) {
           console.error("Error parsing saved user:", error);

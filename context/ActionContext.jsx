@@ -114,8 +114,6 @@ export function ActionProvider({ children }) {
           }
         );
       }
-
-      console.log(`✅ Successfully pushed to GitHub: ${repoData.html_url}`);
       return repoData;
     } catch (error) {
       console.error("GitHub push error:", error);

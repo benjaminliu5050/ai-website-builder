@@ -33,7 +33,6 @@ function ChatView() {
     setMessages(result?.messages);
     previousMessagesLength.current = result?.messages?.length || 0;
     isInitialLoad.current = false;
-    console.log(result);
   };
 
   useEffect(() => {
@@ -68,13 +67,9 @@ function ChatView() {
 
     try {
       const PROMPT = JSON.stringify(messages) + Prompt.CHAT_PROMPT;
-      console.log("Sending prompt:", PROMPT);
-
       const result = await axios.post("/api/ai-chat", {
         prompt: PROMPT,
       });
-
-      console.log("AI Response:", result.data.result);
 
       setMessages((prev) => [
         ...prev,
@@ -104,9 +99,9 @@ function ChatView() {
   };
 
   return (
-    <div className="relative h-[85vh] flex flex-col">
+    <div className="relative flex flex-col h-full">
       {/* Messages Container with Custom Scrollbar */}
-      <div className="flex-1 overflow-y-scroll px-4 scrollbar-hide">
+      <div className="flex-1 overflow-y-scroll scrollbar-hide">
         <style jsx>{`
           .scrollbar-hide {
             -ms-overflow-style: none;
@@ -123,7 +118,7 @@ function ChatView() {
             className={`flex mb-3 ${msg?.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[75%] p-3 rounded-lg flex gap-2 items-start leading-7 ${
+              className={`max-w-[85%] p-3 rounded-lg flex gap-2 items-start leading-4 text-sm ${
                 msg?.role === "user" ? "ml-auto" : "mr-auto"
               }`}
               style={{
@@ -142,8 +137,8 @@ function ChatView() {
                   <Image
                     src={userDetail?.picture}
                     alt="userImage"
-                    width={35}
-                    height={35}
+                    width={20}
+                    height={20}
                     className="rounded-full flex-shrink-0"
                   />
                 </>

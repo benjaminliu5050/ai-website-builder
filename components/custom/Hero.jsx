@@ -50,17 +50,10 @@ function Hero() {
     userDetail?._id ? { userId: userDetail._id } : "skip"
   );
 
-  useEffect(() => {
-    console.log("UserDetail updated:", userDetail);
-  }, [userDetail]);
-
   const onGenerate = async (input) => {
     if (!input?.trim()) return;
 
-    console.log("onGenerate called with userDetail:", userDetail);
-
     if (isLoadingUser) {
-      console.log("Still loading user...");
       return;
     }
 
@@ -68,7 +61,6 @@ function Hero() {
     setMessages([msg]);
 
     if (!userDetail || !userDetail._id) {
-      console.log("User not authenticated, opening dialog");
       setOpenDialog(true);
       return;
     }
@@ -210,6 +202,7 @@ function Hero() {
                 {userInput && (
                   <div className="flex flex-col gap-2">
                     <button
+                      type="button"
                       onClick={enhancePrompt}
                       disabled={isEnhancing || isLoading || isNavigating}
                       className={`p-2 h-9 w-9 md:h-10 md:w-10 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
@@ -226,6 +219,7 @@ function Hero() {
                       )}
                     </button>
                     <button
+                      type="button"
                       onClick={() =>
                         !isLoading &&
                         !isNavigating &&
@@ -347,6 +341,7 @@ function Hero() {
                 {workspaces.length > 6 && (
                   <div className="text-center mt-4 md:mt-6">
                     <button
+                      type="button"
                       onClick={() => router.push("/workspaces")}
                       className="text-purple-400 hover:text-purple-300 text-sm font-medium transition-colors"
                     >

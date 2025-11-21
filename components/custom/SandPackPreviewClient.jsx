@@ -10,10 +10,34 @@ function SandPackPreviewClient() {
   const previewRef = React.useRef();
   const { sandpack } = useSandpack();
   const { action, setAction } = useContext(ActionContext);
+  const [previewKey, setPreviewKey] = React.useState(0);
+  const filesHashRef = React.useRef("");
 
   useEffect(() => {
     GetSandpackClient();
   }, [sandpack, action]);
+
+  // Force preview refresh when files change
+  useEffect(() => {
+    if (sandpack?.files) {
+      // Create a hash of file contents to detect changes
+      const filesHash = JSON.stringify(
+        Object.keys(sandpack.files)
+          .sort()
+          .map((key) => [key, sandpack.files[key]])
+      );
+      
+      // Only refresh if files actually changed
+      if (filesHash !== filesHashRef.current) {
+        filesHashRef.current = filesHash;
+        // Small delay to ensure files are fully loaded in Sandpack
+        const timer = setTimeout(() => {
+          setPreviewKey((prev) => prev + 1);
+        }, 200);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [sandpack?.files]);
 
   const downloadAsZip = async () => {
     try {
@@ -52,8 +76,6 @@ function SandPackPreviewClient() {
       // Generate and download the zip file
       const blob = await zip.generateAsync({ type: "blob" });
       saveAs(blob, `sandpack-project-${Date.now()}.zip`);
-
-      console.log("Project exported successfully!");
     } catch (error) {
       console.error("Error creating zip:", error);
       alert("Failed to export project. Please try again.");
@@ -63,11 +85,8 @@ function SandPackPreviewClient() {
   const GetSandpackClient = async () => {
     const client = previewRef.current?.getClient();
     if (client && action) {
-      console.log("Client", client);
-
       if (action?.actionType === "deploy") {
         const result = await client.getCodeSandboxURL();
-        console.log(result);
         window.open(`https://${result?.sandboxId}.csb.app/`, "_blank");
       } else if (action?.actionType === "export") {
         // Download as ZIP instead of opening CodeSandbox
@@ -81,6 +100,7 @@ function SandPackPreviewClient() {
 
   return (
     <SandpackPreview
+      key={previewKey}
       style={{ height: "80vh" }}
       ref={previewRef}
       showNavigator

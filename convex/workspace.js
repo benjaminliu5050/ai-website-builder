@@ -13,7 +13,6 @@ export const CreateWorkSpace = mutation({
         messages: args.messages,
         user: args.user,
       });
-      console.log(workspaceId);
       return workspaceId;
     } catch (error) {
       throw new Error("Error creating workspace: " + error.message);
@@ -40,7 +39,6 @@ export const UpdateMessages = mutation({
     const result = await ctx.db.patch(args.workspaceId, {
       messages: args.messages,
     });
-    console.log(result);
     return result;
   },
 });
@@ -54,7 +52,6 @@ export const UpdateFiles = mutation({
     const result = await ctx.db.patch(args.workspaceId, {
       fileData: args.files,
     });
-    console.log(result);
     return result;
   },
 });
