@@ -116,13 +116,13 @@ function CodeView() {
 
   return (
     <div className="relative flex flex-col h-full min-h-0">
-      <div className="bg-[#181818] w-full p-2 border border-neutral-800 flex-shrink-0">
+      <div className="bg-[#181818] w-full p-2 border border-neutral-800 shrink-0">
         <div className="flex items-center flex-wrap shrink-0 bg-black p-1 w-[160px] gap-2 justify-center rounded-full">
           <button
             type="button"
             className={`text-sm font-medium transition-all duration-200 cursor-pointer px-3 py-1 rounded-full ${
               activeTab === "code"
-                ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
+                ? "bg-linear-to-r from-blue-500 to-indigo-500 text-white shadow-md"
                 : "text-gray-300 hover:text-blue-400 hover:bg-blue-500/10"
             }`}
             onClick={() => setActiveTab("code")}
@@ -133,7 +133,7 @@ function CodeView() {
             type="button"
             className={`text-sm font-medium transition-all duration-200 cursor-pointer px-3 py-1 rounded-full ${
               activeTab === "preview"
-                ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
+                ? "bg-linear-to-r from-blue-500 to-indigo-500 text-white shadow-md"
                 : "text-gray-300 hover:text-blue-400 hover:bg-blue-500/10"
             }`}
             onClick={() => {
@@ -167,7 +167,7 @@ function CodeView() {
               </>
             ) : (
               <div style={{ height: "100%", width: "100%", position: "relative" }}>
-                <SandPackPreviewClient key={`preview-${sandpackKey}-${activeTab}-${previewRefreshKey}`} />
+                <SandPackPreviewClient style={{ height: "100%" }} key={`preview-${sandpackKey}-${activeTab}-${previewRefreshKey}`} />
               </div>
             )}
           </SandpackLayout>
