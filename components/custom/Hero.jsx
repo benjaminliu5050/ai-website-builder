@@ -364,7 +364,7 @@ function Hero() {
 
       {/* Footer */}
       <div className="fixed bottom-0 left-0 right-0 p-4 flex justify-between items-center text-xs text-gray-400">
-        <span>© Copyright Astra AI</span>
+        <span>© Copyright DIFINES Prompt</span>
         <span>
           Created by{" "}
           <a

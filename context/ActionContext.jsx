@@ -50,7 +50,7 @@ export function ActionProvider({ children }) {
     const {
       repoName = "astra-ai-project",
       isPrivate = false,
-      commitMessage = "Initial commit from Astra AI",
+      commitMessage = "Initial commit from DIFINES Prompt",
       workspaceCode,
     } = payload;
 
@@ -79,7 +79,7 @@ export function ActionProvider({ children }) {
           },
           body: JSON.stringify({
             name: repoName,
-            description: "Generated from Astra AI",
+            description: "Generated from DIFINES Prompt",
             private: isPrivate,
             auto_init: true,
           }),

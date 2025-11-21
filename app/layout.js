@@ -28,9 +28,9 @@ export const urbanist = Urbanist({
 });
 
 export const metadata = {
-  title: "Astra AI - AI Website Builder",
+  title: "DIFINES Prompt - AI Website Builder",
   description:
-    "Build stunning websites effortlessly with Astra's AI-powered website builder. No coding required.",
+    "Build stunning websites effortlessly with DIFINES Prompt's AI-powered website builder. No coding required.",
 };
 
 export default function RootLayout({ children }) {

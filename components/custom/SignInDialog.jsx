@@ -178,7 +178,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
           <DialogHeader className="relative z-10 p-6 pb-4 border-b border-gray-800">
             <DialogTitle className="text-center">
               <h2 className="font-bold text-2xl text-white">
-                Welcome to Astra AI
+                Welcome to DIFINES Prompt
               </h2>
             </DialogTitle>
             <DialogDescription>

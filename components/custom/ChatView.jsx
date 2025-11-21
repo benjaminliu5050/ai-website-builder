@@ -137,7 +137,7 @@ function ChatView() {
                   </div>
                   <div className="flex-1 prose prose-invert prose-sm max-w-none">
                     <div className="font-semibold text-purple-600 mb-1 not-prose">
-                      Astra AI
+                      DIFINES Prompt
                     </div>
                     <ReactMarkdown
                       components={{

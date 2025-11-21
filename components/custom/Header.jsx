@@ -82,7 +82,7 @@ function Header() {
       await handleAction("pushToGithub", {
         repoName,
         isPrivate,
-        commitMessage: "Initial commit from Astra AI",
+        commitMessage: "Initial commit from DIFINES Prompt",
         workspaceCode,
       });
 
@@ -100,9 +100,9 @@ function Header() {
         {/* Logo + Text - Hide on workspace */}
         {!isWorkspace && (
           <Link href="/" className="flex items-center gap-3 cursor-pointer">
-            <Image src="/logo.png" alt="Astra Logo" width={30} height={30} />
+            <Image src="/logo.png" alt="DIFINES Prompt Logo" width={30} height={30} />
             <div className="flex flex-col">
-              <span className="font-semibold">Astra AI</span>
+              <span className="font-semibold">DIFINES Prompt</span>
               <span className="text-xs font-normal text-white-400 -mt-1">
                 formerly known as MERN AI
               </span>

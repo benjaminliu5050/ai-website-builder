@@ -9,11 +9,11 @@ SUGGESTIONS: [
     "Launch an AI Portfolio Builder with Editable Templates"
   ],
   HERO_HEADING: "Turn your ideas into apps instantly",
-  HERO_DESC: "Describe what you need, and Astra AI will design, code, and deploy your full-stack web app in minutes.",
+  HERO_DESC: "Describe what you need, and DIFINES Prompt will design, code, and deploy your full-stack web app in minutes.",
   INPUT_PLACEHOLDER: "Describe your next project idea...",
-  SIGNIN_HEADING: "Continue with Astra AI",
+  SIGNIN_HEADING: "Continue with DIFINES Prompt",
   SIGNIN_SUBHEADING: "Sign in to start building with AI-powered speed and creativity.",
-  SIGNIN_AGREEMENT_TEXT: "By continuing, you agree to Astra’s Terms and consent to usage data collection for performance improvements.",
+  SIGNIN_AGREEMENT_TEXT: "By continuing, you agree to DIFINES Prompt's Terms and consent to usage data collection for performance improvements.",
 
 
   DEFAULT_FILE: {
