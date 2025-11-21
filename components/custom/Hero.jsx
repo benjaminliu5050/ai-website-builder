@@ -163,220 +163,223 @@ function Hero() {
       />
 
       {/* Hero Content */}
-      <div className="flex flex-col items-center mt-24 xl:mt-36 gap-2 px-4">
-        <h2 className="font-bold text-4xl text-center">
-          Turn your{" "}
-          <span className="font-['Press_Start_2P'] bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-sky-300 animate-gradient">
-            ideas
-          </span>{" "}
-          into{" "}
-          <span className="font-['Press_Start_2P'] bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-violet-400 to-purple-300 animate-gradient">
-            apps
-          </span>{" "}
-          instantly
-        </h2>
-        <p className="text-gray-100 font-medium">{Lookup.HERO_DESC}</p>
-
-        <div
-          className="p-5 border rounded-xl max-w-xl w-full mt-3"
-          style={{ backgroundColor: Colors.BACKGROUND }}
-        >
-          <div className="flex gap-2">
-            <textarea
-              value={userInput}
-              placeholder={Lookup.INPUT_PLACEHOLDER}
-              onChange={(e) => setUserInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  if (
-                    userInput?.trim() &&
-                    !isLoading &&
-                    !isNavigating &&
-                    !isEnhancing
-                  ) {
-                    onGenerate(userInput);
-                  }
-                }
-              }}
-              spellCheck={false}
-              className="outline-none bg-transparent w-full h-32 max-h-56 resize-none"
-              disabled={isLoading || isNavigating || isEnhancing}
-            />
-            {userInput && (
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={enhancePrompt}
-                  disabled={isEnhancing || isLoading || isNavigating}
-                  className={`p-2 h-10 w-10 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
-                    isEnhancing || isLoading || isNavigating
-                      ? "opacity-50 cursor-not-allowed"
-                      : "cursor-pointer"
-                  } bg-emerald-500 hover:bg-emerald-600`}
-                  title="Enhance prompt with AI"
-                >
-                  {isEnhancing ? (
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                  ) : (
-                    <Wand2 className="h-5 w-5" />
-                  )}
-                </button>
-                <button
-                  onClick={() =>
-                    !isLoading &&
-                    !isNavigating &&
-                    !isEnhancing &&
-                    onGenerate(userInput)
-                  }
-                  disabled={isLoading || isNavigating || isEnhancing}
-                  className={`p-2 h-10 w-10 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
-                    isLoading || isNavigating || isEnhancing
-                      ? "opacity-50 cursor-not-allowed"
-                      : "cursor-pointer"
-                  } bg-blue-500 hover:bg-blue-600`}
-                  title="Generate workspace"
-                >
-                  <ArrowRight className="h-5 w-5" />
-                </button>
-              </div>
-            )}
-          </div>
-          <div>
-            <Link className="h-5 w-5" />
-          </div>
-        </div>
-
-        <div className="flex mt-5 flex-wrap max-w-2xl items-center justify-center gap-3">
-          {Lookup?.SUGGESTIONS.map((s, index) => (
-            <h2
-              key={index}
-              onClick={() =>
-                !isLoading && !isNavigating && !isEnhancing && onGenerate(s)
-              }
-              className="p-1 px-2 border rounded-full text-xs text-gray-400 hover:text-white cursor-pointer transition-colors"
-            >
-              {s}
+      <div className="h-full flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4 py-8 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+          <div className="flex flex-col items-center gap-3 max-w-4xl w-full">
+            <h2 className="font-bold text-3xl md:text-4xl lg:text-5xl text-center">
+              Turn your{" "}
+              <span className="font-['Press_Start_2P'] bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-sky-300 animate-gradient">
+                ideas
+              </span>{" "}
+              into{" "}
+              <span className="font-['Press_Start_2P'] bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-violet-400 to-purple-300 animate-gradient">
+                apps
+              </span>{" "}
+              instantly
             </h2>
-          ))}
-        </div>
+            <p className="text-gray-300 font-medium text-sm md:text-base text-center max-w-2xl">
+              {Lookup.HERO_DESC}
+            </p>
 
-        {/* Previous Workspaces Section */}
-        {userDetail && workspaces && workspaces.length > 0 && (
-          <div className="w-full max-w-6xl mt-12 mb-20">
-            <div className="flex items-center gap-2 mb-6">
-              <Code2 className="h-6 w-6 text-purple-400" />
-              <h3 className="text-2xl font-bold text-white">
-                Your Recent Projects
-              </h3>
+            <div
+              className="p-4 md:p-5 border border-gray-700/50 rounded-xl max-w-xl w-full mt-2 backdrop-blur-sm bg-opacity-90"
+              style={{ backgroundColor: Colors.BACKGROUND }}
+            >
+              <div className="flex gap-2">
+                <textarea
+                  value={userInput}
+                  placeholder={Lookup.INPUT_PLACEHOLDER}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      if (
+                        userInput?.trim() &&
+                        !isLoading &&
+                        !isNavigating &&
+                        !isEnhancing
+                      ) {
+                        onGenerate(userInput);
+                      }
+                    }
+                  }}
+                  spellCheck={false}
+                  className="outline-none bg-transparent w-full h-24 md:h-32 resize-none text-sm md:text-base"
+                  disabled={isLoading || isNavigating || isEnhancing}
+                />
+                {userInput && (
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={enhancePrompt}
+                      disabled={isEnhancing || isLoading || isNavigating}
+                      className={`p-2 h-9 w-9 md:h-10 md:w-10 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
+                        isEnhancing || isLoading || isNavigating
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
+                      } bg-emerald-500 hover:bg-emerald-600`}
+                      title="Enhance prompt with AI"
+                    >
+                      {isEnhancing ? (
+                        <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
+                      ) : (
+                        <Wand2 className="h-4 w-4 md:h-5 md:w-5" />
+                      )}
+                    </button>
+                    <button
+                      onClick={() =>
+                        !isLoading &&
+                        !isNavigating &&
+                        !isEnhancing &&
+                        onGenerate(userInput)
+                      }
+                      disabled={isLoading || isNavigating || isEnhancing}
+                      className={`p-2 h-9 w-9 md:h-10 md:w-10 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
+                        isLoading || isNavigating || isEnhancing
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
+                      } bg-blue-500 hover:bg-blue-600`}
+                      title="Generate workspace"
+                    >
+                      <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {workspaces.slice(0, 6).map((workspace) => (
-                <div
-                  key={workspace._id}
-                  onClick={() => navigateToWorkspace(workspace._id)}
-                  className="group relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-xl p-4 cursor-pointer hover:border-purple-500 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 overflow-hidden"
+            <div className="flex mt-3 flex-wrap max-w-2xl items-center justify-center gap-2 md:gap-3">
+              {Lookup?.SUGGESTIONS.map((s, index) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    !isLoading && !isNavigating && !isEnhancing && onGenerate(s)
+                  }
+                  className="px-3 py-1.5 border border-gray-700/50 rounded-full text-xs text-gray-400 hover:text-white hover:border-gray-600 cursor-pointer transition-all duration-200"
                 >
-                  {/* Animated gradient overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-blue-500/0 group-hover:from-purple-500/10 group-hover:to-blue-500/10 transition-all duration-300" />
-
-                  <div className="relative z-10">
-                    {/* Preview Section */}
-                    <div className="bg-gray-950/50 rounded-lg p-3 mb-3 h-32 overflow-hidden border border-gray-700/50">
-                      <div className="text-xs text-gray-400 font-mono overflow-y-auto h-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
-                        {workspace.messages && workspace.messages.length > 0 ? (
-                          workspace.messages.slice(0, 3).map((msg, idx) => (
-                            <div key={idx} className="mb-2">
-                              <span
-                                className={
-                                  msg.role === "user"
-                                    ? "text-blue-400"
-                                    : "text-purple-400"
-                                }
-                              >
-                                {msg.role === "user" ? "You: " : "AI: "}
-                              </span>
-                              <span className="text-gray-300">
-                                {msg.content.slice(0, 80)}
-                                {msg.content.length > 80 ? "..." : ""}
-                              </span>
-                            </div>
-                          ))
-                        ) : (
-                          <span className="text-gray-500">No messages yet</span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Workspace Info */}
-                    <div className="space-y-2">
-                      <h4 className="text-white font-semibold truncate group-hover:text-purple-300 transition-colors">
-                        {getWorkspaceTitle(workspace)}
-                      </h4>
-
-                      <div className="flex items-center gap-2 text-xs text-gray-400">
-                        <Clock className="h-3 w-3" />
-                        <span>
-                          {formatRelativeTime(workspace._creationTime)}
-                        </span>
-                      </div>
-
-                      {/* Messages count */}
-                      <div className="flex items-center gap-2">
-                        <div className="bg-purple-500/20 text-purple-300 text-xs px-2 py-1 rounded-full">
-                          {workspace.messages?.length || 0} messages
-                        </div>
-                        {workspace.fileData && (
-                          <div className="bg-blue-500/20 text-blue-300 text-xs px-2 py-1 rounded-full">
-                            Has files
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Hover arrow indicator */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ArrowRight className="h-5 w-5 text-purple-400" />
-                  </div>
-                </div>
+                  {s}
+                </button>
               ))}
             </div>
 
-            {workspaces.length > 6 && (
-              <div className="text-center mt-6">
-                <button
-                  onClick={() => router.push("/workspaces")}
-                  className="text-purple-400 hover:text-purple-300 text-sm font-medium transition-colors"
-                >
-                  View all workspaces →
-                </button>
+            {/* Previous Workspaces Section */}
+            {userDetail && workspaces && workspaces.length > 0 && (
+              <div className="w-full max-w-6xl mt-8 md:mt-12">
+                <div className="flex items-center gap-2 mb-4 md:mb-6">
+                  <Code2 className="h-5 w-5 md:h-6 md:w-6 text-purple-400" />
+                  <h3 className="text-xl md:text-2xl font-bold text-white">
+                    Your Recent Projects
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+                  {workspaces.slice(0, 6).map((workspace) => (
+                    <div
+                      key={workspace._id}
+                      onClick={() => navigateToWorkspace(workspace._id)}
+                      className="group relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-sm border border-gray-700/50 rounded-xl p-3 md:p-4 cursor-pointer hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 overflow-hidden"
+                    >
+                      {/* Animated gradient overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-blue-500/0 group-hover:from-purple-500/10 group-hover:to-blue-500/10 transition-all duration-300" />
+
+                      <div className="relative z-10">
+                        {/* Preview Section */}
+                        <div className="bg-gray-950/50 rounded-lg p-2 md:p-3 mb-2 md:mb-3 h-24 md:h-32 overflow-hidden border border-gray-700/50">
+                          <div className="text-xs text-gray-400 font-mono overflow-y-auto h-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+                            {workspace.messages && workspace.messages.length > 0 ? (
+                              workspace.messages.slice(0, 3).map((msg, idx) => (
+                                <div key={idx} className="mb-1 md:mb-2">
+                                  <span
+                                    className={
+                                      msg.role === "user"
+                                        ? "text-blue-400"
+                                        : "text-purple-400"
+                                    }
+                                  >
+                                    {msg.role === "user" ? "You: " : "AI: "}
+                                  </span>
+                                  <span className="text-gray-300">
+                                    {msg.content.slice(0, 60)}
+                                    {msg.content.length > 60 ? "..." : ""}
+                                  </span>
+                                </div>
+                              ))
+                            ) : (
+                              <span className="text-gray-500">No messages yet</span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Workspace Info */}
+                        <div className="space-y-1.5 md:space-y-2">
+                          <h4 className="text-white font-semibold truncate text-sm md:text-base group-hover:text-purple-300 transition-colors">
+                            {getWorkspaceTitle(workspace)}
+                          </h4>
+
+                          <div className="flex items-center gap-2 text-xs text-gray-400">
+                            <Clock className="h-3 w-3" />
+                            <span>
+                              {formatRelativeTime(workspace._creationTime)}
+                            </span>
+                          </div>
+
+                          {/* Messages count */}
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <div className="bg-purple-500/20 text-purple-300 text-xs px-2 py-0.5 md:py-1 rounded-full">
+                              {workspace.messages?.length || 0} messages
+                            </div>
+                            {workspace.fileData && (
+                              <div className="bg-blue-500/20 text-blue-300 text-xs px-2 py-0.5 md:py-1 rounded-full">
+                                Has files
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Hover arrow indicator */}
+                      <div className="absolute top-3 right-3 md:top-4 md:right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowRight className="h-4 w-4 md:h-5 md:w-5 text-purple-400" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {workspaces.length > 6 && (
+                  <div className="text-center mt-4 md:mt-6">
+                    <button
+                      onClick={() => router.push("/workspaces")}
+                      className="text-purple-400 hover:text-purple-300 text-sm font-medium transition-colors"
+                    >
+                      View all workspaces →
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
-        )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex-shrink-0 p-3 md:p-4 flex justify-between items-center text-xs text-gray-500 border-t border-gray-800/50">
+          <span>© Copyright DIFINES Prompt</span>
+          <span>
+            Created by{" "}
+            <a
+              href="https://github.com/aiden77mori"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              DIFINES
+            </a>
+          </span>
+        </div>
       </div>
 
       <SignInDialog
         openDialog={openDialog}
         closeDialog={(v) => setOpenDialog(v)}
       />
-
-      {/* Footer */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 flex justify-between items-center text-xs text-gray-400">
-        <span>© Copyright DIFINES Prompt</span>
-        <span>
-          Created by{" "}
-          <a
-            href="https://github.com/aiden77mori"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 hover:text-blue-300 transition-colors"
-          >
-            DIFINES
-          </a>
-        </span>
-      </div>
     </>
   );
 }

@@ -1,10 +1,8 @@
-import { Button } from "@/components/ui/button";
 import Hero from "@/components/custom/Hero";
-import Image from "next/image";
 
 export default function Home() {
   return (
-    <div>
+    <div className="h-full">
       <Hero />
     </div>
   );

@@ -36,6 +36,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
     onSuccess: async (tokenResponse) => {
       try {
         setLoading(true);
+        setError("");
         const userInfo = await axios.get(
           "https://www.googleapis.com/oauth2/v3/userinfo",
           {
@@ -68,14 +69,36 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
         setUserDetail(userWithId);
         closeDialog(false);
       } catch (err) {
-        setError(err.message || "Google sign-in failed");
+        console.error("Google sign-in error:", err);
+        setError(
+          err.response?.data?.error?.message ||
+            err.message ||
+            "Google sign-in failed. Please try again."
+        );
       } finally {
         setLoading(false);
       }
     },
     onError: (errorResponse) => {
-      setError("Google sign-in failed");
-      console.log(errorResponse);
+      console.error("Google OAuth error:", errorResponse);
+      let errorMessage = "Google sign-in failed";
+      
+      // Check for specific OAuth errors
+      if (errorResponse?.error === "popup_closed_by_user") {
+        errorMessage = "Sign-in was cancelled. Please try again.";
+      } else if (errorResponse?.error === "access_denied") {
+        errorMessage = "Access denied. Please check your Google account permissions.";
+      } else if (errorResponse?.error_description) {
+        errorMessage = errorResponse.error_description;
+      } else if (
+        errorResponse?.error === "invalid_request" ||
+        errorResponse?.error === "invalid_client"
+      ) {
+        errorMessage =
+          "OAuth configuration error. Please ensure the JavaScript origin is registered in Google Cloud Console.";
+      }
+      
+      setError(errorMessage);
     },
   });
 
@@ -222,9 +245,25 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
             {/* Google Tab */}
             {tab === "google" && (
               <div className="space-y-4">
+                {!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
+                  <div className="bg-yellow-500/10 border border-yellow-500/50 rounded-lg p-3 mb-4">
+                    <p className="text-yellow-400 text-xs text-center">
+                      ⚠️ Google OAuth Client ID is not configured. Please add NEXT_PUBLIC_GOOGLE_CLIENT_ID to your environment variables.
+                    </p>
+                  </div>
+                )}
                 <Button
-                  onClick={() => googleLogin()}
-                  disabled={loading}
+                  onClick={() => {
+                    if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
+                      setError(
+                        "Google OAuth is not configured. Please contact the administrator."
+                      );
+                      return;
+                    }
+                    setError("");
+                    googleLogin();
+                  }}
+                  disabled={loading || !process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
                   className="w-full h-11 bg-black hover:bg-gray-950 text-white border-2 border-blue-500 hover:border-blue-400 rounded-lg font-medium transition-all duration-200 disabled:opacity-50"
                 >
                   {loading ? (
@@ -236,6 +275,39 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
                     </div>
                   )}
                 </Button>
+                {error && tab === "google" && (
+                  <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
+                    <p className="text-red-400 text-sm text-center mb-2">
+                      {error}
+                    </p>
+                    {error.includes("JavaScript origin") && (
+                      <div className="text-xs text-gray-400 space-y-1 mt-2">
+                        <p className="font-semibold text-gray-300">
+                          To fix this issue:
+                        </p>
+                        <ol className="list-decimal list-inside space-y-1 text-left ml-2">
+                          <li>Go to Google Cloud Console</li>
+                          <li>Navigate to APIs & Services → Credentials</li>
+                          <li>Click on your OAuth 2.0 Client ID</li>
+                          <li>Add authorized JavaScript origins:</li>
+                          <ul className="list-disc list-inside ml-4 mt-1">
+                            <li>
+                              <code className="text-blue-400">
+                                https://difines-prompt.vercel.app
+                              </code>
+                            </li>
+                            <li>
+                              <code className="text-blue-400">
+                                http://localhost:3000
+                              </code>{" "}
+                              (for local development)
+                            </li>
+                          </ul>
+                        </ol>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 

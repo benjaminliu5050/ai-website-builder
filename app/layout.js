@@ -38,9 +38,9 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${manrope.variable} ${urbanist.variable}`}
+      className={`${manrope.variable} ${urbanist.variable} h-full`}
     >
-      <body className="font-sans">
+      <body className="font-sans h-full">
         <ConvexClientProvider>
           <Provider>{children}</Provider>
         </ConvexClientProvider>

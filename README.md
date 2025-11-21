@@ -167,6 +167,27 @@ GOOGLE_GEMINI_API_KEY=your_gemini_api_key_here
 # Google OAuth
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_oauth_client_id
 
+### 4. Setup Google OAuth
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google+ API:
+   - Navigate to **APIs & Services** → **Library**
+   - Search for "Google+ API" and enable it
+4. Create OAuth 2.0 Credentials:
+   - Go to **APIs & Services** → **Credentials**
+   - Click **Create Credentials** → **OAuth client ID**
+   - Choose **Web application** as the application type
+   - Configure the OAuth consent screen if prompted
+5. **IMPORTANT**: Add Authorized JavaScript origins:
+   - In your OAuth 2.0 Client ID settings, add these origins:
+     - `https://difines-prompt.vercel.app` (your production URL)
+     - `http://localhost:3000` (for local development)
+   - Click **Save**
+6. Copy the **Client ID** and add it to your `.env.local` as `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
+
+**Note**: If you see "Access blocked: This app's request is invalid" error, it means the JavaScript origin is not registered. Make sure to add your production URL to the authorized JavaScript origins in Google Cloud Console.
+
 # GitHub OAuth
 NEXT_PUBLIC_GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
@@ -175,7 +196,7 @@ GITHUB_CLIENT_SECRET=your_github_client_secret
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=your_paypal_client_id
 ```
 
-### 4. Setup GitHub OAuth App
+### 5. Setup GitHub OAuth App
 
 1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
 2. Click "New OAuth App"
@@ -185,7 +206,7 @@ NEXT_PUBLIC_PAYPAL_CLIENT_ID=your_paypal_client_id
    - **Authorization callback URL**: `http://localhost:3000/api/auth/github/callback`
 4. Copy the Client ID and Client Secret to your `.env.local`
 
-### 5. Initialize Convex Backend
+### 6. Initialize Convex Backend
 
 ```bash
 # Login to Convex
@@ -200,7 +221,7 @@ This will:
 - Set up real-time subscriptions
 - Deploy backend functions
 
-### 6. Start Development Server
+### 7. Start Development Server
 
 ```bash
 npm run dev
@@ -208,7 +229,7 @@ npm run dev
 
 Visit `http://localhost:3000` to see Astra AI in action.
 
-### 7. Build for Production
+### 8. Build for Production
 
 ```bash
 npm run build

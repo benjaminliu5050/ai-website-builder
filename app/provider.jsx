@@ -40,7 +40,7 @@ const Provider = ({ children }) => {
   };
 
   return (
-    <div>
+    <div className="h-screen flex flex-col overflow-hidden">
       <GoogleOAuthProvider
         clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
       >
@@ -56,7 +56,9 @@ const Provider = ({ children }) => {
                 disableTransitionOnChange
               >
                 <Header />
-                {children}
+                <div className="flex-1 overflow-hidden">
+                  {children}
+                </div>
               </NextThemesProvider>
             </ActionProvider>
           </MessagesContext.Provider>
