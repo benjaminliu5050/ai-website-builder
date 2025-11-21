@@ -368,12 +368,12 @@ function Hero() {
         <span>
           Created by{" "}
           <a
-            href="https://github.com/priyyannshhu"
+            href="https://github.com/aiden77mori"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-400 hover:text-blue-300 transition-colors"
           >
-            Priyanshu Vishwakarma
+            DIFINES
           </a>
         </span>
       </div>

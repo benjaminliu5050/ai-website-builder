@@ -48,7 +48,7 @@ export function ActionProvider({ children }) {
 
   const handleGitHubPush = async (payload) => {
     const {
-      repoName = "astra-ai-project",
+      repoName = "difines-prompt-project",
       isPrivate = false,
       commitMessage = "Initial commit from DIFINES Prompt",
       workspaceCode,

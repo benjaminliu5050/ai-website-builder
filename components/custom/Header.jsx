@@ -32,7 +32,7 @@ function Header() {
     useContext(ActionContext);
   const [openDialog, setOpenDialog] = useState(false);
   const [githubDialog, setGithubDialog] = useState(false);
-  const [repoName, setRepoName] = useState("astra-ai-project");
+  const [repoName, setRepoName] = useState("difines-prompt-project");
   const [isPrivate, setIsPrivate] = useState(false);
   const path = usePathname();
   const router = useRouter();
@@ -232,7 +232,7 @@ function Header() {
               <Input
                 value={repoName}
                 onChange={(e) => setRepoName(e.target.value)}
-                placeholder="astra-ai-project"
+                placeholder="difines-prompt-project"
                 className="mt-2"
               />
             </div>

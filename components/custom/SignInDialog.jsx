@@ -106,7 +106,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
     try {
       setLoading(true);
       // Generate a unique email using username
-      const generatedEmail = `${username}@astra-local.app`;
+      const generatedEmail = `${username}@difines-prompt.ai`;
 
       const createdUser = await CreateUser({
         name,
