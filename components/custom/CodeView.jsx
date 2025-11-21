@@ -34,6 +34,40 @@ function CodeView() {
   const [sandpackKey, setSandpackKey] = React.useState(0);
   const [previewRefreshKey, setPreviewRefreshKey] = React.useState(0);
 
+  // Inject styles to ensure Sandpack editor can scroll
+  React.useEffect(() => {
+    const styleId = 'sandpack-scroll-styles';
+    if (document.getElementById(styleId)) return;
+
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      /* Ensure Sandpack code editor can scroll */
+      .sp-code-editor,
+      .sp-code-editor > div,
+      .sp-code-editor .cm-editor,
+      .sp-code-editor .cm-scroller {
+        height: 100% !important;
+        overflow-y: auto !important;
+        overflow-x: auto !important;
+      }
+      /* Ensure Sandpack file explorer can scroll */
+      .sp-file-explorer,
+      .sp-file-explorer > div {
+        height: 100% !important;
+        overflow-y: auto !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      const existingStyle = document.getElementById(styleId);
+      if (existingStyle) {
+        existingStyle.remove();
+      }
+    };
+  }, []);
+
   React.useEffect(() => {
     // Only trigger AI code generation if:
     // 1. Not in initial load
