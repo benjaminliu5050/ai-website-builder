@@ -1,7 +1,7 @@
 "use client";
 import { useConvex } from "convex/react";
 import { useParams } from "next/navigation";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { api } from "@/convex/_generated/api";
 import { MessagesContext } from "@/context/MessagesContext";
 import Colors from "@/data/Colors";
@@ -22,6 +22,8 @@ function ChatView() {
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const isInitialLoad = useRef(true);
+  const previousMessagesLength = useRef(0);
   // const { toggleSidebar } = useSidebar();
 
   const GetWorkspaceData = async () => {
@@ -29,19 +31,34 @@ function ChatView() {
       workspaceId: id,
     });
     setMessages(result?.messages);
+    previousMessagesLength.current = result?.messages?.length || 0;
+    isInitialLoad.current = false;
     console.log(result);
   };
 
   useEffect(() => {
-    id && GetWorkspaceData();
+    if (id) {
+      isInitialLoad.current = true;
+      previousMessagesLength.current = 0;
+      GetWorkspaceData();
+    }
   }, [id]);
 
   useEffect(() => {
-    if (messages?.length > 0) {
+    // Only trigger AI response if:
+    // 1. Not in initial load
+    // 2. Messages length increased (new message added)
+    // 3. Last message is from user
+    if (!isInitialLoad.current && messages?.length > 0) {
+      const currentLength = messages.length;
       const role = messages[messages.length - 1]?.role;
-      if (role == "user") {
+      
+      // Only call API if a new message was added (length increased)
+      if (currentLength > previousMessagesLength.current && role == "user") {
         GetAiResponse();
       }
+      
+      previousMessagesLength.current = currentLength;
     }
   }, [messages]);
 

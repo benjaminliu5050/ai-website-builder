@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   SandpackProvider,
   SandpackLayout,
@@ -29,18 +29,33 @@ function CodeView() {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const UpdateFiles = useMutation(api.workspace.UpdateFiles);
   const [loading, setLoading] = React.useState(false);
+  const isInitialLoad = useRef(true);
+  const previousMessagesLength = useRef(0);
 
   React.useEffect(() => {
-    if (messages?.length > 0) {
+    // Only trigger AI code generation if:
+    // 1. Not in initial load
+    // 2. Messages length increased (new message added)
+    // 3. Last message is from user
+    if (!isInitialLoad.current && messages?.length > 0) {
+      const currentLength = messages.length;
       const role = messages[messages?.length - 1].role;
-      if (role === "user") {
+      
+      // Only call API if a new message was added (length increased)
+      if (currentLength > previousMessagesLength.current && role === "user") {
         GenerateAiCode();
       }
+      
+      previousMessagesLength.current = currentLength;
     }
   }, [messages]);
 
   React.useEffect(() => {
-    id && GetFiles();
+    if (id) {
+      isInitialLoad.current = true;
+      previousMessagesLength.current = 0;
+      GetFiles();
+    }
   }, [id]);
 
   const GetFiles = async () => {
@@ -50,6 +65,8 @@ function CodeView() {
     });
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...result?.fileData };
     setFiles(mergedFiles);
+    previousMessagesLength.current = result?.messages?.length || 0;
+    isInitialLoad.current = false;
     setLoading(false);
   };
 
