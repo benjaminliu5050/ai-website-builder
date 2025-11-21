@@ -5,12 +5,14 @@ import { ActionContext } from "@/context/ActionContext";
 import { useContext } from "react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { Loader2 } from "lucide-react";
 
 function SandPackPreviewClient() {
   const previewRef = React.useRef();
   const { sandpack } = useSandpack();
   const { action, setAction } = useContext(ActionContext);
   const [previewKey, setPreviewKey] = React.useState(0);
+  const [isLoading, setIsLoading] = React.useState(true);
   const filesHashRef = React.useRef("");
 
   useEffect(() => {
@@ -19,6 +21,8 @@ function SandPackPreviewClient() {
 
   // Force preview refresh when component mounts (when switching to preview tab)
   useEffect(() => {
+    // Show loading immediately when component mounts
+    setIsLoading(true);
     // Always refresh when component mounts to ensure preview is fresh
     const timer = setTimeout(() => {
       setPreviewKey((prev) => prev + 1);
@@ -39,6 +43,7 @@ function SandPackPreviewClient() {
       // Only refresh if files actually changed
       if (filesHash !== filesHashRef.current) {
         filesHashRef.current = filesHash;
+        setIsLoading(true);
         // Small delay to ensure files are fully loaded in Sandpack
         const timer = setTimeout(() => {
           setPreviewKey((prev) => prev + 1);
@@ -47,6 +52,18 @@ function SandPackPreviewClient() {
       }
     }
   }, [sandpack?.files]);
+
+  // Listen for preview ready state from Sandpack
+  useEffect(() => {
+    // Check if preview is ready - when status is idle and we have files
+    if (sandpack?.status === "idle" && sandpack?.files && Object.keys(sandpack.files).length > 0 && previewKey > 0) {
+      // Preview is ready, hide loading after a short delay to ensure it's fully rendered
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [sandpack?.status, sandpack?.files, previewKey]);
 
   const downloadAsZip = async () => {
     try {
@@ -107,13 +124,27 @@ function SandPackPreviewClient() {
     }
   };
 
+  // Check if there's any content to show
+  const hasContent = sandpack?.files && Object.keys(sandpack.files).length > 0;
+
   return (
-    <SandpackPreview
-      key={previewKey}
-      style={{ height: "80vh", width: "100%" }}
-      ref={previewRef}
-      showNavigator
-    />
+    <div className="h-full w-full relative" style={{ minHeight: 0 }}>
+      {isLoading && hasContent && (
+        <div className="absolute inset-0 bg-gray-900 flex items-center justify-center z-10">
+          <div className="flex flex-col items-center gap-4">
+            <Loader2 className="h-10 w-10 text-blue-500 animate-spin" />
+            <p className="text-gray-400 text-sm font-medium">Loading preview...</p>
+          </div>
+        </div>
+      )}
+      <SandpackPreview
+        key={previewKey}
+        className="h-full w-full"
+        style={{ opacity: isLoading ? 0 : 1, transition: "opacity 0.3s ease-in-out", minHeight: 0 }}
+        ref={previewRef}
+        showNavigator
+      />
+    </div>
   );
 }
 

@@ -115,8 +115,8 @@ function CodeView() {
   };
 
   return (
-    <div className="relative flex flex-col h-full">
-      <div className="bg-[#181818] w-full p-2 border border-neutral-800">
+    <div className="relative flex flex-col h-full min-h-0">
+      <div className="bg-[#181818] w-full p-2 border border-neutral-800 flex-shrink-0">
         <div className="flex items-center flex-wrap shrink-0 bg-black p-1 w-[160px] gap-2 justify-center rounded-full">
           <button
             type="button"
@@ -146,31 +146,33 @@ function CodeView() {
           </button>
         </div>
       </div>
-      <SandpackProvider
-        key={sandpackKey}
-        files={files}
-        template="react"
-        theme="dark"
-        customSetup={{
-          dependencies: {
-            ...Lookup.DEPENDANCY,
-          },
-        }}
-        options={{ externalResources: ["https://cdn.tailwindcss.com"] }}
-      >
-        <SandpackLayout>
-          {activeTab === "code" ? (
-            <>
-              <SandpackFileExplorer style={{ height: "80vh" }} />
-              <SandpackCodeEditor style={{ height: "80vh" }} />
-            </>
-          ) : (
-            <>
-              <SandPackPreviewClient key={`preview-${sandpackKey}-${activeTab}-${previewRefreshKey}`} />
-            </>
-          )}
-        </SandpackLayout>
-      </SandpackProvider>
+      <div className="flex-1 min-h-0 overflow-hidden">
+        <SandpackProvider
+          key={sandpackKey}
+          files={files}
+          template="react"
+          theme="dark"
+          customSetup={{
+            dependencies: {
+              ...Lookup.DEPENDANCY,
+            },
+          }}
+          options={{ externalResources: ["https://cdn.tailwindcss.com"] }}
+        >
+          <SandpackLayout style={{ height: "100%" }}>
+            {activeTab === "code" ? (
+              <>
+                <SandpackFileExplorer style={{ height: "100%" }} />
+                <SandpackCodeEditor style={{ height: "100%" }} />
+              </>
+            ) : (
+              <>
+                <SandPackPreviewClient key={`preview-${sandpackKey}-${activeTab}-${previewRefreshKey}`} />
+              </>
+            )}
+          </SandpackLayout>
+        </SandpackProvider>
+      </div>
       {loading && (
         <div className="p-10 bg-gray-900 opacity-80 absolute top-0 rounded-lg w-full h-full flex items-center justify-center">
           <Loader className="animate-spin h-10 w-10 text-white" />
