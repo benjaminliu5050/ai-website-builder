@@ -166,7 +166,7 @@ function CodeView() {
             </>
           ) : (
             <>
-              <SandPackPreviewClient key={`preview-${sandpackKey}-${activeTab}-${previewRefreshKey.current}`} />
+              <SandPackPreviewClient key={`preview-${sandpackKey}-${activeTab}-${previewRefreshKey}`} />
             </>
           )}
         </SandpackLayout>

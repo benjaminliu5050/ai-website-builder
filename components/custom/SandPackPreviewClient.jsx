@@ -17,6 +17,15 @@ function SandPackPreviewClient() {
     GetSandpackClient();
   }, [sandpack, action]);
 
+  // Force preview refresh when component mounts (when switching to preview tab)
+  useEffect(() => {
+    // Always refresh when component mounts to ensure preview is fresh
+    const timer = setTimeout(() => {
+      setPreviewKey((prev) => prev + 1);
+    }, 150);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Force preview refresh when files change
   useEffect(() => {
     if (sandpack?.files) {
@@ -101,7 +110,7 @@ function SandPackPreviewClient() {
   return (
     <SandpackPreview
       key={previewKey}
-      style={{ height: "80vh" }}
+      style={{ height: "80vh", width: "100%" }}
       ref={previewRef}
       showNavigator
     />
