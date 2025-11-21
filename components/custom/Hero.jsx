@@ -156,8 +156,8 @@ function Hero() {
 
       {/* Hero Content */}
       <div className="h-full flex flex-col overflow-hidden">
-        <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4 py-8 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
-          <div className="flex flex-col items-center gap-3 max-w-4xl w-full">
+        <div className="flex-1 flex flex-col items-center gap-4 px-4 py-6 md:py-8 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+          <div className="flex flex-col items-center gap-3 max-w-4xl w-full flex-shrink-0 pt-4 md:pt-6">
             <h2 className="font-bold text-3xl md:text-4xl lg:text-5xl text-center">
               Turn your{" "}
               <span className="font-['Press_Start_2P'] bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-sky-300 animate-gradient">
@@ -174,74 +174,73 @@ function Hero() {
             </p>
 
             <div
-              className="p-4 md:p-5 border border-gray-700/50 rounded-xl max-w-xl w-full mt-2 backdrop-blur-sm bg-opacity-90"
+              className="p-4 md:p-5 border border-gray-700/50 rounded-xl max-w-xl w-full mt-2 backdrop-blur-sm bg-opacity-90 flex-shrink-0"
               style={{ backgroundColor: Colors.BACKGROUND }}
             >
-              <div className="flex gap-2">
-                <textarea
-                  value={userInput}
-                  placeholder={Lookup.INPUT_PLACEHOLDER}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      if (
-                        userInput?.trim() &&
-                        !isLoading &&
-                        !isNavigating &&
-                        !isEnhancing
-                      ) {
-                        onGenerate(userInput);
-                      }
+              <textarea
+                value={userInput}
+                placeholder={Lookup.INPUT_PLACEHOLDER}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    if (
+                      userInput?.trim() &&
+                      !isLoading &&
+                      !isNavigating &&
+                      !isEnhancing
+                    ) {
+                      onGenerate(userInput);
                     }
-                  }}
-                  spellCheck={false}
-                  className="outline-none bg-transparent w-full h-24 md:h-32 resize-none text-sm md:text-base"
-                  disabled={isLoading || isNavigating || isEnhancing}
-                />
-                {userInput && (
-                  <div className="flex flex-col gap-2">
-                    <button
-                      type="button"
-                      onClick={enhancePrompt}
-                      disabled={isEnhancing || isLoading || isNavigating}
-                      className={`p-2 h-9 w-9 md:h-10 md:w-10 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
-                        isEnhancing || isLoading || isNavigating
-                          ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer"
-                      } bg-emerald-500 hover:bg-emerald-600`}
-                      title="Enhance prompt with AI"
-                    >
-                      {isEnhancing ? (
-                        <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
-                      ) : (
-                        <Wand2 className="h-4 w-4 md:h-5 md:w-5" />
-                      )}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        !isLoading &&
-                        !isNavigating &&
-                        !isEnhancing &&
-                        onGenerate(userInput)
-                      }
-                      disabled={isLoading || isNavigating || isEnhancing}
-                      className={`p-2 h-9 w-9 md:h-10 md:w-10 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
-                        isLoading || isNavigating || isEnhancing
-                          ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer"
-                      } bg-blue-500 hover:bg-blue-600`}
-                      title="Generate workspace"
-                    >
-                      <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
-                    </button>
-                  </div>
-                )}
-              </div>
+                  }
+                }}
+                spellCheck={false}
+                className="outline-none bg-transparent w-full min-h-[80px] max-h-[120px] resize-none text-sm md:text-base"
+                disabled={isLoading || isNavigating || isEnhancing}
+                rows={3}
+              />
+              {userInput && (
+                <div className="flex items-center justify-end gap-2 mt-2">
+                  <button
+                    type="button"
+                    onClick={enhancePrompt}
+                    disabled={isEnhancing || isLoading || isNavigating}
+                    className={`p-2 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
+                      isEnhancing || isLoading || isNavigating
+                        ? "opacity-50 cursor-not-allowed"
+                        : "cursor-pointer"
+                    } bg-emerald-500 hover:bg-emerald-600`}
+                    title="Enhance prompt with AI"
+                  >
+                    {isEnhancing ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Wand2 className="h-4 w-4" />
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      !isLoading &&
+                      !isNavigating &&
+                      !isEnhancing &&
+                      onGenerate(userInput)
+                    }
+                    disabled={isLoading || isNavigating || isEnhancing}
+                    className={`p-2 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
+                      isLoading || isNavigating || isEnhancing
+                        ? "opacity-50 cursor-not-allowed"
+                        : "cursor-pointer"
+                    } bg-blue-500 hover:bg-blue-600`}
+                    title="Generate workspace"
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
             </div>
 
-            <div className="flex mt-3 flex-wrap max-w-2xl items-center justify-center gap-2 md:gap-3">
+            <div className="flex mt-3 flex-wrap max-w-2xl items-center justify-center gap-2 md:gap-3 flex-shrink-0">
               {Lookup?.SUGGESTIONS.map((s, index) => (
                 <button
                   key={index}
@@ -257,7 +256,7 @@ function Hero() {
 
             {/* Previous Workspaces Section */}
             {userDetail && workspaces && workspaces.length > 0 && (
-              <div className="w-full max-w-6xl mt-8 md:mt-12">
+              <div className="w-full max-w-6xl mt-6 md:mt-8 flex-shrink-0">
                 <div className="flex items-center gap-2 mb-4 md:mb-6">
                   <Code2 className="h-5 w-5 md:h-6 md:w-6 text-purple-400" />
                   <h3 className="text-xl md:text-2xl font-bold text-white">

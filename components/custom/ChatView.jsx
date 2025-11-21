@@ -24,6 +24,7 @@ function ChatView() {
   const [error, setError] = useState(null);
   const isInitialLoad = useRef(true);
   const previousMessagesLength = useRef(0);
+  const messagesEndRef = useRef(null);
   // const { toggleSidebar } = useSidebar();
 
   const GetWorkspaceData = async () => {
@@ -60,6 +61,13 @@ function ChatView() {
       previousMessagesLength.current = currentLength;
     }
   }, [messages]);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, loading]);
 
   const GetAiResponse = async () => {
     setLoading(true);
@@ -99,16 +107,25 @@ function ChatView() {
   };
 
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="relative flex flex-col h-full min-h-0">
       {/* Messages Container with Custom Scrollbar */}
-      <div className="flex-1 overflow-y-scroll scrollbar-hide">
+      <div className="flex-1 overflow-y-auto min-h-0 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent px-2 py-2 pb-4">
         <style jsx>{`
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+          .scrollbar-thin {
+            scrollbar-width: thin;
           }
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
+          .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+          }
+          .scrollbar-thin::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          .scrollbar-thin::-webkit-scrollbar-thumb {
+            background-color: rgba(75, 85, 99, 0.5);
+            border-radius: 3px;
+          }
+          .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(75, 85, 99, 0.7);
           }
         `}</style>
 
@@ -247,42 +264,48 @@ function ChatView() {
             </div>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
       {/* Input Section */}
       <div
-        className="p-5 border rounded-xl max-w-xl w-full mt-3"
+        className="flex-shrink-0 p-4 border rounded-xl w-full mt-3"
         style={{ backgroundColor: Colors.BACKGROUND }}
       >
-        <div className="flex gap-2">
-          <textarea
-            value={userInput}
-            placeholder={Lookup.INPUT_PLACEHOLDER}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                if (userInput?.trim()) {
-                  onGenerate(userInput);
-                }
+        <textarea
+          value={userInput}
+          placeholder={Lookup.INPUT_PLACEHOLDER}
+          onChange={(e) => setUserInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              if (userInput?.trim()) {
+                onGenerate(userInput);
               }
-            }}
-            spellCheck={false}
-            className="outline-none bg-transparent w-full h-32 max-h-56 resize-none"
-            disabled={loading}
-          />
+            }
+          }}
+          spellCheck={false}
+          className="outline-none bg-transparent w-full min-h-[80px] max-h-[120px] resize-none text-sm"
+          disabled={loading}
+          rows={3}
+        />
+        <div className="flex items-center justify-between mt-2">
+          <div className="flex items-center gap-2">
+            <Link className="h-4 w-4 text-gray-400 hover:text-gray-300 cursor-pointer transition-colors" />
+          </div>
           {userInput && (
-            <ArrowRight
+            <button
               onClick={() => onGenerate(userInput)}
-              className={`bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
+              disabled={loading}
+              className={`bg-blue-500 hover:bg-blue-600 p-2 h-8 w-8 rounded-md flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
+                loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
               }`}
-            />
+              title="Send message"
+            >
+              <ArrowRight className="h-4 w-4 text-white" />
+            </button>
           )}
         </div>
-        <div>
-          <Link className="h-5 w-5" />
-        </div>
-      </div>{" "}
+      </div>
     </div>
   );
 }
