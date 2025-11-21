@@ -36,10 +36,10 @@ function CodeView() {
 
   // Inject styles to ensure Sandpack editor can scroll
   React.useEffect(() => {
-    const styleId = 'sandpack-scroll-styles';
+    const styleId = "sandpack-scroll-styles";
     if (document.getElementById(styleId)) return;
 
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.id = styleId;
     style.textContent = `
       /* Ensure Sandpack code editor can scroll */
@@ -76,12 +76,12 @@ function CodeView() {
     if (!isInitialLoad.current && messages?.length > 0) {
       const currentLength = messages.length;
       const role = messages[messages?.length - 1].role;
-      
+
       // Only call API if a new message was added (length increased)
       if (currentLength > previousMessagesLength.current && role === "user") {
         GenerateAiCode();
       }
-      
+
       previousMessagesLength.current = currentLength;
     }
   }, [messages]);
@@ -108,7 +108,6 @@ function CodeView() {
     setSandpackKey(0);
     setLoading(false);
   };
-
 
   const GenerateAiCode = async () => {
     setLoading(true);
@@ -139,7 +138,6 @@ function CodeView() {
         // Force preview refresh when switching to preview tab
         setPreviewRefreshKey((prev) => prev + 1);
       }
-
     } catch (error) {
       console.error("Error in GenerateAiCode:", error);
       toast.error("Failed to generate AI code. Please try again later.");
@@ -186,6 +184,7 @@ function CodeView() {
           files={files}
           template="react"
           theme="dark"
+          style={{ height: "100%" }}
           customSetup={{
             dependencies: {
               ...Lookup.DEPENDANCY,
@@ -200,8 +199,13 @@ function CodeView() {
                 <SandpackCodeEditor style={{ height: "100%" }} />
               </>
             ) : (
-              <div style={{ height: "100%", width: "100%", position: "relative" }}>
-                <SandPackPreviewClient style={{ height: "100%" }} key={`preview-${sandpackKey}-${activeTab}-${previewRefreshKey}`} />
+              <div
+                style={{ height: "100%", width: "100%", position: "relative" }}
+              >
+                <SandPackPreviewClient
+                  style={{ height: "100%" }}
+                  key={`preview-${sandpackKey}-${activeTab}-${previewRefreshKey}`}
+                />
               </div>
             )}
           </SandpackLayout>
