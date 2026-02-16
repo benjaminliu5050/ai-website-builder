@@ -139,8 +139,8 @@ Convex account
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/benjaminliu5050/astra-ai.git
-cd astra-ai
+git clone https://github.com/benjaminliu5050/ai-website-builder.git
+cd ai-website-builder
 ```
 
 ### 2. Install Dependencies
@@ -346,7 +346,7 @@ storage persistence. Include smooth animations and a clean UI."
 
 ### File Structure
 ```
-astra-ai/
+ai-website-builder/
 ├── app/                          # Next.js 15 App Router
 │   ├── api/                      # API routes
 │   │   ├── ai-chat/              # Chat AI endpoint
@@ -676,7 +676,7 @@ Special thanks to the amazing open-source community:
 
 If you encounter issues or have questions:
 
-1. Check existing [GitHub Issues](https://github.com/benjaminliu5050/astra-ai/issues)
+1. Check existing [GitHub Issues](https://github.com/benjaminliu5050/ai-website-builder/issues)
 2. Open a new issue with detailed information
 3. Provide reproduction steps and screenshots
 4. For GitHub integration issues, check OAuth configuration
@@ -715,7 +715,7 @@ If you encounter issues or have questions:
 
 **[Live Demo](https://astra-aii.vercel.app)** • **[Documentation](#)** • **[Changelog](#)**
 
-[![GitHub stars](https://img.shields.io/github/stars/benjaminliu5050/astra-ai?style=social)](https://github.com/priyyannshhu/astra-ai)
-[![GitHub forks](https://img.shields.io/github/forks/benjaminliu5050/astra-ai?style=social)](https://github.com/priyyannshhu/astra-ai)
+[![GitHub stars](https://img.shields.io/github/stars/benjaminliu5050/ai-website-builder?style=social)](https://github.com/benjaminliu5050/ai-website-builder)
+[![GitHub forks](https://img.shields.io/github/forks/benjaminliu5050/ai-website-builder?style=social)](https://github.com/benjaminliu5050/ai-website-builder)
 
 </div>
